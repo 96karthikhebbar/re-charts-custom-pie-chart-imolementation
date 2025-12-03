@@ -2,10 +2,10 @@ import { Pie, PieChart, Sector, Tooltip, Legend } from 'recharts';
 
 // Sample data
 const data = [
-  { name: 'Group A', value: 400, fill: '#8884d8' },
-  { name: 'Group B', value: 300, fill: '#82ca9d' },
-  { name: 'Group C', value: 300, fill: '#ffc658' },
-  { name: 'Group D', value: 200, fill: '#ff8042' },
+  { name: 'Residential', value: 400, fill: '#8884d8' },
+  { name: 'Industrial', value: 300, fill: '#82ca9d' },
+  { name: 'Commercial', value: 300, fill: '#ffc658' },
+  { name: 'Government', value: 200, fill: '#ff8042' },
 ];
 
 // Total Count
