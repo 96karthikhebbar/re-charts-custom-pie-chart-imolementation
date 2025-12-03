@@ -1,4 +1,4 @@
-name: Build and Deploy Vite App to GitHub Pages (Pages API)
+name: Build and Deploy Vite App to GitHub Pages (Pages API - v4 artifacts)
 
 # Trigger on push to main (change branch if needed) and allow manual runs
 on:
@@ -7,10 +7,12 @@ on:
       - main
   workflow_dispatch: {}
 
+# Must include pages: write; add actions: read which deploy-pages@v4 may require
 permissions:
   contents: read
   pages: write
   id-token: write
+  actions: read
 
 jobs:
   build_and_deploy:
@@ -37,19 +39,18 @@ jobs:
         env:
           NODE_ENV: production
 
-      # Official Pages API setup + upload + deploy
+      # ------------ Pages API steps (official actions, v4-compatible) ------------
       - name: Configure Pages
-        uses: actions/configure-pages@v3
+        # Use latest stable configure-pages (v5 is current at time of writing)
+        uses: actions/configure-pages@v5
 
-      - name: Upload pages artifact (dist)
-        uses: actions/upload-pages-artifact@v1
+      - name: Upload pages artifact (dist) - v3 (uses artifact v4)
+        # v3 of upload-pages-artifact packages the dist and uploads using v4 artifact backend
+        uses: actions/upload-pages-artifact@v3
         with:
+          # For Vite, the build output is usually ./dist
           path: ./dist
 
-      - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v1
-
-      # optional: create CNAME file in artifact (uncomment and edit to use)
-      # - name: Add CNAME (optional)
-      #   run: echo 'www.example.com' > dist/CNAME
-      #   if: always()
+      - name: Deploy to GitHub Pages (v4)
+        # deploy-pages@v4 consumes artifacts uploaded by upload-pages-artifact@v3 or upload-artifact@v4
+        uses: actions/deploy-pages@v4
